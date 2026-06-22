@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI Chat</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --sidebar-w:290px;
+  --font:'Plus Jakarta Sans',sans-serif;
+}
+body{
+  font-family:var(--font);
+  background:#f1f5f9;
+  height:100vh;
+  overflow:hidden;
+  display:flex;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:4px}
+
+/* ── Sidebar ── */
+#sidebar{
+  width:var(--sidebar-w);
+  min-width:var(--sidebar-w);
+  background:#fff;
+  border-right:1px solid #e8ecf4;
+  display:flex;
+  flex-direction:column;
+  height:100vh;
+}
+.sidebar-header{
+  padding:22px 20px 14px;
+  border-bottom:1px solid #f1f5f9;
+}
+.sidebar-header h1{
+  font-size:18px;
+  font-weight:700;
+  color:#0f172a;
+}
+.persona-list{
+  flex:1;
+  overflow-y:auto;
+  padding:12px;
+}
+.persona-item{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  padding:11px 10px;
+  border-radius:14px;
+  cursor:pointer;
+  transition:background .15s;
+  margin-bottom:3px;
+  position:relative;
+}
+.persona-item:hover{background:#f8faff}
+.persona-item.active{background:#eef2ff}
+.persona-avatar{
+  width:50px;height:50px;
+  border-radius:50%;
+  flex-shrink:0;
+  position:relative;
+}
+.persona-avatar svg{display:block}
+.persona-info{flex:1;min-width:0}
+.persona-name{font-size:15px;font-weight:600;color:#0f172a}
+.persona-tag{font-size:12px;color:#94a3b8;margin-top:2px}
+.persona-dot{
+  width:9px;height:9px;
+  border-radius:50%;
+  background:#22c55e;
+  flex-shrink:0;
+}
+.sidebar-footer{
+  padding:14px 20px;
+  border-top:1px solid #f1f5f9;
+  font-size:12px;
+  color:#94a3b8;
+  text-align:center;
+}
+
+/* ── Chat Area ── */
+#chat-area{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+  height:100vh;
+}
+
+/* Header */
+#chat-header{
+  background:#fff;
+  border-bottom:1px solid #e8ecf4;
+  padding:14px 22px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  flex-shrink:0;
+}
+#chat-header .h-avatar{width:46px;height:46px;flex-shrink:0}
+#chat-header .h-name{font-size:17px;font-weight:700;color:#0f172a}
+#chat-header .h-status{font-size:13px;color:#22c55e;font-weight:500;margin-top:2px}
+#chat-header .h-badge{
+  margin-left:auto;
+  background:#eef2ff;
+  color:#4338ca;
+  padding:5px 14px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:600;
+}
+
+/* Messages */
+#messages{
+  flex:1;
+  overflow-y:auto;
+  padding:24px;
+  background:#f8faff;
+  display:flex;
+  flex-direction:column;
+}
+.empty-state{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  opacity:0;
+  animation:fadeIn .3s ease forwards;
+}
+.empty-state .es-title{font-size:18px;font-weight:600;color:#0f172a}
+.empty-state .es-sub{font-size:14px;color:#94a3b8}
+
+/* Message rows */
+.msg-row{
+  display:flex;
+  align-items:flex-end;
+  gap:8px;
+  margin-bottom:18px;
+  animation:fadeUp .25s ease;
+}
+.msg-row.user{flex-direction:row-reverse}
+.msg-avatar-sm{width:34px;height:34px;flex-shrink:0}
+.user-avatar-sm{
+  width:32px;height:32px;
+  border-radius:50%;
+  background:#e0e7ff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;color:#4338ca;
+  flex-shrink:0;
+}
+.msg-col{
+  display:flex;
+  flex-direction:column;
+  max-width:62%;
+}
+.msg-row.user .msg-col{align-items:flex-end}
+.bubble{
+  padding:11px 15px;
+  font-size:14px;
+  line-height:1.55;
+  white-space:pre-wrap;
+  word-break:break-word;
+}
+.bubble.ai{
+  background:#fff;
+  color:#1a1a2e;
+  border-radius:18px 18px 18px 4px;
+  box-shadow:0 1px 4px rgba(0,0,0,0.07);
+  border:1px solid #f0f0f0;
+}
+.bubble.user{
+  border-radius:18px 18px 4px 18px;
+  color:#fff;
+}
+.msg-time{
+  font-size:11px;
+  color:#9ca3af;
+  margin-top:4px;
+  padding:0 4px;
+}
+
+/* Typing indicator */
+.typing-row{
+  display:flex;
+  align-items:flex-end;
+  gap:8px;
+  margin-bottom:18px;
+}
+.typing-bubble{
+  padding:14px 18px;
+  background:#fff;
+  border-radius:18px 18px 18px 4px;
+  box-shadow:0 1px 4px rgba(0,0,0,0.07);
+  border:1px solid #f0f0f0;
+  display:flex;
+  gap:6px;
+  align-items:center;
+}
+.dot-bounce{
+  width:7px;height:7px;
+  border-radius:50%;
+  animation:bounce 1.2s ease-in-out infinite;
+}
+.dot-bounce:nth-child(2){animation-delay:.2s}
+.dot-bounce:nth-child(3){animation-delay:.4s}
+
+/* Input */
+#chat-footer{
+  background:#fff;
+  border-top:1px solid #e8ecf4;
+  padding:14px 18px;
+  display:flex;
+  align-items:flex-end;
+  gap:11px;
+  flex-shrink:0;
+}
+#msg-input{
+  flex:1;
+  border:1.5px solid #e8ecf4;
+  border-radius:16px;
+  padding:11px 16px;
+  font-size:14px;
+  font-family:var(--font);
+  color:#0f172a;
+  background:#f8faff;
+  resize:none;
+  outline:none;
+  line-height:1.5;
+  max-height:120px;
+  overflow-y:auto;
+  transition:border-color .15s;
+}
+#msg-input:focus{border-color:#a5b4fc}
+#msg-input::placeholder{color:#94a3b8}
+#send-btn{
+  width:46px;height:46px;
+  border-radius:50%;
+  border:none;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;
+  flex-shrink:0;
+}
+#send-btn:hover{filter:brightness(.9)}
+#send-btn:active{transform:scale(.95)}
+#send-btn:disabled{cursor:not-allowed}
+
+/* Animations */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes fadeIn{
+  from{opacity:0}to{opacity:1}
+}
+@keyframes bounce{
+  0%,60%,100%{transform:translateY(0)}
+  30%{transform:translateY(-6px)}
+}
+
+/* Mobile */
+@media(max-width:640px){
+  #sidebar{
+    position:fixed;left:-100%;top:0;z-index:20;transition:left .25s;
+    width:260px;min-width:260px;
+  }
+  #sidebar.open{left:0}
+  #mobile-menu{display:flex}
+}
+#mobile-menu{
+  display:none;
+  align-items:center;justify-content:center;
+  width:40px;height:40px;cursor:pointer;
+  background:none;border:none;
+  margin-right:4px;
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div id="sidebar">
+  <div class="sidebar-header">
+    <h1>Conversations</h1>
+  </div>
+  <div class="persona-list" id="persona-list">
+    <!-- Injected by JS -->
+  </div>
+  <div class="sidebar-footer">All powered by Llama 3 · Groq</div>
+</div>
+
+<!-- CHAT AREA -->
+<div id="chat-area">
+
+  <!-- Header -->
+  <div id="chat-header">
+    <button id="mobile-menu" onclick="document.getElementById('sidebar').classList.toggle('open')" aria-label="Menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="h-avatar" id="header-avatar"></div>
+    <div>
+      <div class="h-name" id="header-name"></div>
+      <div class="h-status">● Online</div>
+    </div>
+    <div class="h-badge" id="header-badge"></div>
+  </div>
+
+  <!-- Messages -->
+  <div id="messages"></div>
+
+  <!-- Input -->
+  <div id="chat-footer">
+    <textarea id="msg-input" rows="1" placeholder="Message..."></textarea>
+    <button id="send-btn" disabled>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+        <path d="M22 2L11 13" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+
+</div>
+
+<script>
+/* ─── PERSONA DATA ─── */
+const PERSONAS = [
+  {
+    id:'aria', name:'Aria', tag:'Friendly & Warm',
+    color:'#f472b6', accent:'#ec4899', gender:'girl',
+    system:'You are Aria, a warm, caring, friendly AI assistant. Be kind, encouraging, and emotionally supportive in your responses.'
+  },
+  {
+    id:'nova', name:'Nova', tag:'Sharp & Direct',
+    color:'#a78bfa', accent:'#7c3aed', gender:'girl',
+    system:'You are Nova, a sharp, direct, and precise AI. Cut to the point, avoid fluff, and give confident, efficient answers.'
+  },
+  {
+    id:'kai', name:'Kai', tag:'Calm & Analytical',
+    color:'#60a5fa', accent:'#2563eb', gender:'boy',
+    system:'You are Kai, a calm and analytical AI. Think step by step, consider multiple angles, and give well-reasoned, measured responses.'
+  },
+  {
+    id:'rex', name:'Rex', tag:'Bold & Energetic',
+    color:'#fb923c', accent:'#ea580c', gender:'boy',
+    system:'You are Rex, a bold, enthusiastic, high-energy AI! Be hype, motivating, use exclamation points, and get the user pumped up!'
+  }
+];
+
+/* ─── STATE ─── */
+let activeId = 'rex';
+const conversations = { aria:[], nova:[], kai:[], rex:[] };
+let isLoading = false;
+
+/* ─── SVG AVATARS ─── */
+function girlSVG(color, size=50){
+  return `<svg width="${size}" height="${size}" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="25" cy="25" r="25" fill="${color}" opacity=".18"/>
+    <circle cx="25" cy="19" r="8" fill="${color}"/>
+    <path d="M12 45c0-7.18 5.82-13 13-13s13 5.82 13 13" fill="${color}" opacity=".7"/>
+    <path d="M17 16 Q16 10 25 9 Q34 10 33 16" stroke="${color}" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <path d="M14 17 Q12 13 16 15" stroke="${color}" stroke-width="2" stroke-linecap="round" fill="none"/>
+    <path d="M36 17 Q38 13 34 15" stroke="${color}" stroke-width="2" stroke-linecap="round" fill="none"/>
+  </svg>`;
+}
+
+function boySVG(color, size=50){
+  return `<svg width="${size}" height="${size}" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="25" cy="25" r="25" fill="${color}" opacity=".18"/>
+    <circle cx="25" cy="19" r="8" fill="${color}"/>
+    <path d="M12 45c0-7.18 5.82-13 13-13s13 5.82 13 13" fill="${color}" opacity=".7"/>
+    <rect x="18" y="10" width="14" height="5" rx="2.5" fill="${color}"/>
+    <rect x="23" y="8" width="5" height="4" rx="1.5" fill="${color}"/>
+  </svg>`;
+}
+
+function avatarHTML(persona, size=50){
+  return persona.gender === 'girl' ? girlSVG(persona.color, size) : boySVG(persona.color, size);
+}
+
+/* ─── BUILD SIDEBAR ─── */
+function buildSidebar(){
+  const list = document.getElementById('persona-list');
+  list.innerHTML = PERSONAS.map(p => `
+    <div class="persona-item ${p.id===activeId?'active':''}" data-id="${p.id}" onclick="switchPersona('${p.id}')">
+      <div class="persona-avatar">${avatarHTML(p,50)}</div>
+      <div class="persona-info">
+        <div class="persona-name">${p.name}</div>
+        <div class="persona-tag">${p.tag}</div>
+      </div>
+      <div class="persona-dot"></div>
+    </div>
+  `).join('');
+}
+
+/* ─── UPDATE HEADER ─── */
+function updateHeader(){
+  const p = PERSONAS.find(x => x.id === activeId);
+  document.getElementById('header-avatar').innerHTML = avatarHTML(p, 46);
+  document.getElementById('header-name').textContent = p.name;
+  document.getElementById('header-badge').textContent = p.tag;
+  document.getElementById('msg-input').placeholder = `Message ${p.name}...`;
+}
+
+/* ─── RENDER MESSAGES ─── */
+function renderMessages(){
+  const p = PERSONAS.find(x => x.id === activeId);
+  const msgs = conversations[activeId];
+  const box = document.getElementById('messages');
+
+  if(msgs.length === 0){
+    box.innerHTML = `
+      <div class="empty-state">
+        <div>${avatarHTML(p, 72)}</div>
+        <div>
+          <div class="es-title">Say something to ${p.name}</div>
+          <div class="es-sub">${p.tag}</div>
+        </div>
+      </div>`;
+    return;
+  }
+
+  box.innerHTML = msgs.map(m => {
+    const time = new Date(m.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    if(m.role === 'user'){
+      return `
+        <div class="msg-row user">
+          <div class="user-avatar-sm">Y</div>
+          <div class="msg-col">
+            <div class="bubble user" style="background:${p.accent}">${escHtml(m.content)}</div>
+            <div class="msg-time">${time}</div>
+          </div>
+        </div>`;
+    } else {
+      return `
+        <div class="msg-row">
+          <div class="msg-avatar-sm">${avatarHTML(p, 34)}</div>
+          <div class="msg-col">
+            <div class="bubble ai">${escHtml(m.content)}</div>
+            <div class="msg-time">${time}</div>
+          </div>
+        </div>`;
+    }
+  }).join('');
+
+  scrollToBottom();
+}
+
+function showTyping(){
+  const p = PERSONAS.find(x => x.id === activeId);
+  const row = document.createElement('div');
+  row.className = 'typing-row';
+  row.id = 'typing-indicator';
+  row.innerHTML = `
+    <div class="msg-avatar-sm">${avatarHTML(p,34)}</div>
+    <div class="typing-bubble">
+      <div class="dot-bounce" style="background:${p.color}"></div>
+      <div class="dot-bounce" style="background:${p.color}"></div>
+      <div class="dot-bounce" style="background:${p.color}"></div>
+    </div>`;
+  document.getElementById('messages').appendChild(row);
+  scrollToBottom();
+}
+
+function hideTyping(){
+  const el = document.getElementById('typing-indicator');
+  if(el) el.remove();
+}
+
+function scrollToBottom(){
+  const box = document.getElementById('messages');
+  box.scrollTop = box.scrollHeight;
+}
+
+function escHtml(str){
+  return str
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/\n/g,'<br>');
+}
+
+/* ─── SWITCH PERSONA ─── */
+function switchPersona(id){
+  activeId = id;
+  document.querySelectorAll('.persona-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.id === id);
+  });
+  updateHeader();
+  renderMessages();
+  updateSendBtn();
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('msg-input').focus();
+}
+
+/* ─── SEND BUTTON STATE ─── */
+function updateSendBtn(){
+  const p = PERSONAS.find(x => x.id === activeId);
+  const btn = document.getElementById('send-btn');
+  const hasText = document.getElementById('msg-input').value.trim().length > 0;
+  const active = hasText && !isLoading;
+  btn.disabled = !active;
+  btn.style.background = active ? p.accent : '#e2e8f0';
+}
+
+/* ─── SEND MESSAGE ─── */
+async function sendMessage(){
+  const input = document.getElementById('msg-input');
+  const text = input.value.trim();
+  if(!text || isLoading) return;
+
+  const p = PERSONAS.find(x => x.id === activeId);
+
+  conversations[activeId].push({ role:'user', content:text, ts:Date.now() });
+  input.value = '';
+  input.style.height = 'auto';
+  isLoading = true;
+  updateSendBtn();
+  renderMessages();
+  showTyping();
+
+  /* ── FLASK route: POST /chat  ──────────────────────────────────
+     Change the fetch URL below to point to your Flask backend.
+     Your Flask /chat route should accept JSON {persona, messages}
+     and return {reply: "..."} 
+     
+     For direct Groq API (no Flask):
+     Replace the fetch below with a call to Groq API directly.
+  ─────────────────────────────────────────────────────────────── */
+  try {
+    const history = conversations[activeId].map(m => ({role:m.role,content:m.content}));
+
+    /* ── OPTION 1: Call your Flask backend (recommended) ── */
+    const res = await fetch('/chat', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ persona: activeId, messages: history })
+    });
+    const data = await res.json();
+    const reply = data.reply || 'Something went wrong. Please try again!';
+
+    /* ── OPTION 2: Direct Groq API (for testing without Flask) ──
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer YOUR_GROQ_KEY_HERE'  // ⚠️ never expose in production
+      },
+      body: JSON.stringify({
+        model:'llama-3.3-70b-versatile',
+        messages:[{role:'system',content:p.system},...history]
+      })
+    });
+    const data = await res.json();
+    const reply = data.choices[0].message.content;
+    ─────────────────────────────────────────────────── */
+
+    conversations[activeId].push({ role:'assistant', content:reply, ts:Date.now() });
+
+  } catch(e) {
+    conversations[activeId].push({
+      role:'assistant',
+      content:'Something went wrong. Please try again!',
+      ts:Date.now()
+    });
+  }
+
+  isLoading = false;
+  hideTyping();
+  renderMessages();
+  updateSendBtn();
+  input.focus();
+}
+
+/* ─── INPUT EVENTS ─── */
+const input = document.getElementById('msg-input');
+
+input.addEventListener('input', function(){
+  this.style.height = 'auto';
+  this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+  updateSendBtn();
+});
+
+input.addEventListener('keydown', function(e){
+  if(e.key === 'Enter' && !e.shiftKey){
+    e.preventDefault();
+    sendMessage();
+  }
+});
+
+document.getElementById('send-btn').addEventListener('click', sendMessage);
+
+/* ─── INIT ─── */
+buildSidebar();
+updateHeader();
+renderMessages();
+updateSendBtn();
+input.focus();
+</script>
+</body>
+</html>
