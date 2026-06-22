@@ -1,0 +1,258 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap');
+  :root {
+    --bg: #0D0D0F; --bg-card: #14141A; --bg-card2: #1A1A22;
+    --text: #F0EFF8; --text-muted: #8B8A99; --accent: #6C63FF;
+    --accent-soft: rgba(108,99,255,0.12); --border: rgba(255,255,255,0.07);
+    --tag-bg: rgba(108,99,255,0.15); --tag-text: #A09BFF;
+  }
+  .light-mode {
+    --bg: #F8F8FC; --bg-card: #FFFFFF; --bg-card2: #F0EFF8;
+    --text: #0D0D0F; --text-muted: #5A5870; --accent: #5048E5;
+    --accent-soft: rgba(80,72,229,0.08); --border: rgba(0,0,0,0.08);
+    --tag-bg: rgba(80,72,229,0.10); --tag-text: #4038C0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  #portfolio { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; transition: background 0.3s, color 0.3s; padding-bottom: 4rem; }
+  nav { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 2rem; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--bg); z-index: 100; transition: background 0.3s; }
+  .nav-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 18px; color: var(--text); letter-spacing: -0.5px; }
+  .nav-logo span { color: var(--accent); }
+  .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+  nav a { font-size: 13px; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  nav a:hover { color: var(--text); }
+  .toggle-wrap { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-muted); }
+  .toggle { width: 40px; height: 22px; background: var(--bg-card2); border-radius: 11px; border: 1px solid var(--border); position: relative; cursor: pointer; transition: background 0.3s; }
+  .toggle::after { content: ''; position: absolute; width: 16px; height: 16px; border-radius: 50%; background: var(--accent); top: 2px; left: 2px; transition: transform 0.3s; }
+  .light-mode .toggle::after { transform: translateX(18px); }
+  .hero { padding: 5rem 2rem 4rem; max-width: 800px; margin: 0 auto; }
+  .hero-eyebrow { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--accent); background: var(--accent-soft); padding: 4px 12px; border-radius: 20px; margin-bottom: 1.5rem; letter-spacing: 0.5px; text-transform: uppercase; font-weight: 500; }
+  .hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 700; line-height: 1.1; letter-spacing: -1.5px; color: var(--text); margin-bottom: 0.5rem; }
+  .hero h1 .accent { color: var(--accent); }
+  .hero-roles { font-family: 'Space Grotesk', sans-serif; font-size: clamp(1rem, 2.5vw, 1.3rem); color: var(--text-muted); font-weight: 400; margin-bottom: 1.5rem; min-height: 1.8rem; }
+  .hero p { font-size: 15px; color: var(--text-muted); line-height: 1.8; max-width: 560px; margin-bottom: 2rem; }
+  .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-primary { background: var(--accent); color: #fff; padding: 10px 22px; border-radius: 8px; font-size: 14px; font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: opacity 0.2s; cursor: pointer; border: none; }
+  .btn-primary:hover { opacity: 0.88; }
+  .btn-ghost { background: transparent; color: var(--text-muted); padding: 10px 22px; border-radius: 8px; font-size: 14px; font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--border); transition: color 0.2s, border-color 0.2s; cursor: pointer; }
+  .btn-ghost:hover { color: var(--text); }
+  section { max-width: 800px; margin: 0 auto; padding: 3rem 2rem 0; }
+  .section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); font-weight: 600; margin-bottom: 0.5rem; }
+  .section-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.6rem; font-weight: 700; letter-spacing: -0.5px; color: var(--text); margin-bottom: 2rem; }
+  .projects-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+  .project-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; transition: border-color 0.2s, transform 0.2s; }
+  .project-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .project-card.featured { border-color: rgba(108,99,255,0.3); }
+  .project-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; background: var(--accent-soft); color: var(--accent); padding: 3px 10px; border-radius: 20px; margin-bottom: 1rem; }
+  .project-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.15rem; font-weight: 700; color: var(--text); margin-bottom: 0.5rem; letter-spacing: -0.3px; }
+  .project-desc { font-size: 13.5px; color: var(--text-muted); line-height: 1.7; margin-bottom: 1rem; }
+  .project-features { display: flex; flex-direction: column; gap: 5px; margin-bottom: 1.2rem; }
+  .feat-item { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--text-muted); }
+  .feat-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); margin-top: 6px; flex-shrink: 0; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.2rem; }
+  .tag { font-size: 11.5px; background: var(--tag-bg); color: var(--tag-text); padding: 4px 10px; border-radius: 6px; font-weight: 500; }
+  .project-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .link-btn { font-size: 13px; padding: 7px 14px; border-radius: 7px; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; font-weight: 500; transition: opacity 0.2s; border: 1px solid var(--border); color: var(--text-muted); background: transparent; }
+  .link-btn:hover { opacity: 0.75; }
+  .link-btn.primary-link { background: var(--accent); color: #fff; border-color: transparent; }
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; }
+  .skill-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; }
+  .skill-cat { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 8px; font-weight: 600; }
+  .skill-items { display: flex; flex-wrap: wrap; gap: 5px; }
+  .skill-pill { font-size: 12px; background: var(--bg-card2); color: var(--text); padding: 3px 10px; border-radius: 20px; border: 1px solid var(--border); }
+  .about-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 1.75rem; }
+  .about-text { font-size: 14px; color: var(--text-muted); line-height: 1.8; margin-bottom: 1.5rem; }
+  .highlights-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 1.5rem; }
+  .highlight-card { background: var(--bg-card2); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; }
+  .highlight-icon { font-size: 20px; color: var(--accent); margin-bottom: 8px; }
+  .highlight-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .highlight-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+  .edu-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 1.5rem; }
+  .edu-icon { width: 36px; height: 36px; background: var(--accent-soft); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); font-size: 17px; }
+  .edu-val { font-size: 14px; color: var(--text); font-weight: 500; }
+  .edu-label { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .contact-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  footer { max-width: 800px; margin: 3rem auto 0; padding: 1.5rem 2rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); }
+  .cursor { display: inline-block; width: 2px; height: 1em; background: var(--accent); margin-left: 2px; vertical-align: middle; animation: blink 0.9s step-end infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+</style>
+
+<div id="portfolio">
+  <nav>
+    <div class="nav-logo">KR<span>.</span></div>
+    <div class="nav-right">
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#about">About</a>
+      <div class="toggle-wrap">
+        <i class="ti ti-moon" aria-hidden="true" style="font-size:14px"></i>
+        <div class="toggle" id="themeToggle" role="switch" aria-checked="false" aria-label="Toggle light mode" tabindex="0"></div>
+        <i class="ti ti-sun" aria-hidden="true" style="font-size:14px"></i>
+      </div>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-eyebrow">
+      <i class="ti ti-map-pin" aria-hidden="true" style="font-size:12px"></i>
+      Tirupur, Tamil Nadu · Open to Work
+    </div>
+    <h1>Kishore Raja<span class="accent"> P</span></h1>
+    <div class="hero-roles" id="typedRoles"><span class="cursor"></span></div>
+    <p>B.Sc IT graduate who builds end-to-end — from full-stack web apps with React and Node.js to AI-integrated products deployed on AWS. Comfortable with Docker, CI/CD, and real production environments.</p>
+    <div class="hero-btns">
+      <a href="https://linkedin.com/in/kishoreraja0510" class="btn-primary" target="_blank">
+        <i class="ti ti-brand-linkedin" aria-hidden="true"></i> LinkedIn
+      </a>
+      <a href="https://github.com/KishoreRaja05" class="btn-ghost" target="_blank">
+        <i class="ti ti-brand-github" aria-hidden="true"></i> GitHub
+      </a>
+      <a href="tel:+916374746350" class="btn-ghost">
+        <i class="ti ti-phone" aria-hidden="true"></i> +91 63747 46350
+      </a>
+    </div>
+  </div>
+
+  <section id="projects">
+    <div class="section-label">Work</div>
+    <div class="section-title">Projects</div>
+    <div class="projects-grid">
+
+      <div class="project-card featured">
+        <div class="project-badge"><i class="ti ti-star" aria-hidden="true" style="font-size:11px"></i> Featured</div>
+        <div class="project-title">Vaulto — Personal Finance Tracker</div>
+        <div class="project-desc">A full-stack fintech SaaS dashboard for tracking income, expenses, and savings. Built production-grade: Dockerized, deployed on AWS EC2 with nginx reverse proxy, SSL, and CI/CD via GitHub Actions.</div>
+        <div class="project-features">
+          <div class="feat-item"><div class="feat-dot"></div><span>JWT auth, full CRUD transactions, analytics with charts</span></div>
+          <div class="feat-item"><div class="feat-dot"></div><span>Docker + Docker Compose multi-stage build</span></div>
+          <div class="feat-item"><div class="feat-dot"></div><span>AWS EC2 (ap-south-1) · nginx reverse proxy · Let's Encrypt SSL</span></div>
+          <div class="feat-item"><div class="feat-dot"></div><span>CI/CD pipeline via GitHub Actions — auto-deploy on push to main</span></div>
+          <div class="feat-item"><div class="feat-dot"></div><span>AI insights panel, dark mode, fully responsive</span></div>
+        </div>
+        <div class="tags">
+          <span class="tag">React</span><span class="tag">Node.js</span><span class="tag">PostgreSQL</span>
+          <span class="tag">Docker</span><span class="tag">AWS EC2</span><span class="tag">nginx</span>
+          <span class="tag">JWT</span><span class="tag">GitHub Actions</span><span class="tag">Supabase</span>
+        </div>
+        <div class="project-links">
+          <a href="https://vaulto.duckdns.org" class="link-btn primary-link" target="_blank"><i class="ti ti-external-link" aria-hidden="true"></i> Live (AWS)</a>
+          <a href="https://vaulto-v806.onrender.com" class="link-btn" target="_blank"><i class="ti ti-external-link" aria-hidden="true"></i> Live (Render)</a>
+          <a href="https://github.com/KishoreRaja05/Vaulto" class="link-btn" target="_blank"><i class="ti ti-brand-github" aria-hidden="true"></i> GitHub</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-title">AI Chat — Multi-Persona Chatbot</div>
+        <div class="project-desc">A Flask-powered chatbot with 4 distinct AI personalities built on Groq API and Llama 3.3 70B. Each persona has its own tone, conversation history, and character.</div>
+        <div class="project-features">
+          <div class="feat-item"><div class="feat-dot"></div><span>4 personas: Varahi (warm), Vega (sharp), Aruvi (calm), Agni (bold)</span></div>
+          <div class="feat-item"><div class="feat-dot"></div><span>Persistent conversation history per persona</span></div>
+          <div class="feat-item"><div class="feat-dot"></div><span>Typing indicator, dark mode, fully responsive UI</span></div>
+        </div>
+        <div class="tags">
+          <span class="tag">Python</span><span class="tag">Flask</span><span class="tag">Groq API</span>
+          <span class="tag">Llama 3.3</span><span class="tag">Vanilla JS</span><span class="tag">Render</span>
+        </div>
+        <div class="project-links">
+          <a href="https://ai-chatbot-sjuy.onrender.com" class="link-btn primary-link" target="_blank"><i class="ti ti-external-link" aria-hidden="true"></i> Live Demo</a>
+          <a href="https://github.com/KishoreRaja05" class="link-btn" target="_blank"><i class="ti ti-brand-github" aria-hidden="true"></i> GitHub</a>
+        </div>
+      </div>
+
+
+
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="section-label">Stack</div>
+    <div class="section-title">Skills</div>
+    <div class="skills-grid">
+      <div class="skill-card"><div class="skill-cat">Languages</div><div class="skill-items"><span class="skill-pill">Python</span><span class="skill-pill">JavaScript</span><span class="skill-pill">HTML</span><span class="skill-pill">CSS</span></div></div>
+      <div class="skill-card"><div class="skill-cat">Frontend</div><div class="skill-items"><span class="skill-pill">React</span><span class="skill-pill">Vite</span><span class="skill-pill">Tailwind CSS</span><span class="skill-pill">Recharts</span></div></div>
+      <div class="skill-card"><div class="skill-cat">Backend</div><div class="skill-items"><span class="skill-pill">Node.js</span><span class="skill-pill">Express</span><span class="skill-pill">Flask</span><span class="skill-pill">REST API</span><span class="skill-pill">JWT</span></div></div>
+      <div class="skill-card"><div class="skill-cat">Database</div><div class="skill-items"><span class="skill-pill">PostgreSQL</span><span class="skill-pill">Supabase</span><span class="skill-pill">MySQL</span></div></div>
+      <div class="skill-card"><div class="skill-cat">DevOps & Cloud</div><div class="skill-items"><span class="skill-pill">Docker</span><span class="skill-pill">AWS EC2</span><span class="skill-pill">nginx</span><span class="skill-pill">GitHub Actions</span><span class="skill-pill">Render</span></div></div>
+      <div class="skill-card"><div class="skill-cat">AI & APIs</div><div class="skill-items"><span class="skill-pill">Groq API</span><span class="skill-pill">Llama 3.3</span><span class="skill-pill">Claude</span><span class="skill-pill">ChatGPT</span></div></div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="section-label">About</div>
+    <div class="section-title">Background</div>
+    <div class="about-card">
+      <p class="about-text">Fresh B.Sc IT graduate from Sri Ramakrishna College of Arts & Science, Bharathiar University (2026). I build full-stack projects independently — handling everything from frontend and backend to cloud deployment. I'm a self-taught builder who learns by shipping real things.</p>
+
+      <div class="highlights-grid">
+        <div class="highlight-card">
+          <div class="highlight-icon"><i class="ti ti-stack-2" aria-hidden="true"></i></div>
+          <div class="highlight-title">Full Stack Builder</div>
+          <div class="highlight-desc">React frontend to Node/Flask backend — built and shipped end-to-end</div>
+        </div>
+        <div class="highlight-card">
+          <div class="highlight-icon"><i class="ti ti-cloud" aria-hidden="true"></i></div>
+          <div class="highlight-title">Cloud Deployed</div>
+          <div class="highlight-desc">AWS EC2, Docker, nginx, SSL — real production setup, not just localhost</div>
+        </div>
+        <div class="highlight-card">
+          <div class="highlight-icon"><i class="ti ti-robot" aria-hidden="true"></i></div>
+          <div class="highlight-title">AI-Integrated</div>
+          <div class="highlight-desc">Built products using Groq API, Llama 3.3, and AI-assisted development</div>
+        </div>
+        <div class="highlight-card">
+          <div class="highlight-icon"><i class="ti ti-git-branch" aria-hidden="true"></i></div>
+          <div class="highlight-title">CI/CD & DevOps</div>
+          <div class="highlight-desc">GitHub Actions pipelines, Docker Compose, multi-stage builds</div>
+        </div>
+      </div>
+
+      <div class="edu-row">
+        <div class="edu-icon"><i class="ti ti-school" aria-hidden="true"></i></div>
+        <div>
+          <div class="edu-val">B.Sc Information Technology</div>
+          <div class="edu-label">Sri Ramakrishna College · Bharathiar University · Graduated 2026 · CGPA 6.9</div>
+        </div>
+      </div>
+
+      <div class="contact-row">
+        <a href="https://linkedin.com/in/kishoreraja0510" class="link-btn primary-link" target="_blank"><i class="ti ti-brand-linkedin" aria-hidden="true"></i> LinkedIn</a>
+        <a href="https://github.com/KishoreRaja05" class="link-btn" target="_blank"><i class="ti ti-brand-github" aria-hidden="true"></i> GitHub</a>
+        <a href="tel:+916374746350" class="link-btn"><i class="ti ti-phone" aria-hidden="true"></i> +91 63747 46350</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Kishore Raja P · 2026</span>
+    <span>Built with HTML, CSS & JS</span>
+  </footer>
+</div>
+
+<script>
+  const toggle = document.getElementById('themeToggle');
+  const portfolio = document.getElementById('portfolio');
+  toggle.addEventListener('click', () => {
+    portfolio.classList.toggle('light-mode');
+    toggle.setAttribute('aria-checked', portfolio.classList.contains('light-mode'));
+  });
+  toggle.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle.click(); }
+  });
+  const roles = ['Full Stack Developer', 'Python Developer', 'Backend Developer', 'AI App Builder'];
+  let ri = 0, ci = 0, deleting = false;
+  const el = document.getElementById('typedRoles');
+  function type() {
+    const word = roles[ri];
+    if (!deleting) {
+      ci++;
+      el.innerHTML = word.slice(0, ci) + '<span class="cursor"></span>';
+      if (ci === word.length) { deleting = true; setTimeout(type, 1800); return; }
+    } else {
+      ci--;
+      el.innerHTML = word.slice(0, ci) + '<span class="cursor"></span>';
+      if (ci === 0) { deleting = false; ri = (ri + 1) % roles.length; }
+    }
+    setTimeout(type, deleting ? 45 : 80);
+  }
+  type();
+</script>
