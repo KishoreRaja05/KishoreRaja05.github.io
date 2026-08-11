@@ -41,11 +41,7 @@
     .hero { grid-template-columns: 1fr; }
     .hero-stats { max-width: 420px; }
   }
-  .hero-meta { display: flex; align-items: center; gap: 14px; margin-bottom: 1.5rem; flex-wrap: wrap; }
-  .status-badge { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; color: #4ADE80; background: rgba(74,222,128,0.10); border: 1px solid rgba(74,222,128,0.25); padding: 5px 12px; border-radius: 20px; font-weight: 600; letter-spacing: 0.3px; }
-  .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #4ADE80; flex-shrink: 0; box-shadow: 0 0 0 0 rgba(74,222,128,0.5); animation: pulse-dot 2s infinite; }
-  @keyframes pulse-dot { 0% { box-shadow: 0 0 0 0 rgba(74,222,128,0.5); } 70% { box-shadow: 0 0 0 6px rgba(74,222,128,0); } 100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); } }
-  .location-text { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--text-muted); font-weight: 500; }
+  .hero-eyebrow { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--accent); background: var(--accent-soft); padding: 4px 12px; border-radius: 20px; margin-bottom: 1.5rem; letter-spacing: 0.5px; text-transform: uppercase; font-weight: 500; }
   .hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 700; line-height: 1.1; letter-spacing: -1.5px; color: var(--text); margin-bottom: 0.5rem; }
   .hero h1 .accent { color: var(--accent); }
   .hero-roles { font-family: 'Space Grotesk', sans-serif; font-size: clamp(1rem, 2.5vw, 1.3rem); color: var(--text-muted); font-weight: 400; margin-bottom: 1.5rem; min-height: 1.8rem; }
@@ -79,6 +75,7 @@
   .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.2rem; }
   .tag { font-size: 11.5px; background: var(--tag-bg); color: var(--tag-text); padding: 4px 10px; border-radius: 6px; font-weight: 500; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
   .project-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .project-date { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text-muted); }
   .link-btn { font-size: 13px; padding: 7px 14px; border-radius: 7px; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; font-weight: 500; transition: transform 0.16s ease, box-shadow 0.16s ease, opacity 0.2s; border: 1px solid var(--border); color: var(--text-muted); background: var(--bg-card2); }
   .link-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 16px -8px rgba(0,0,0,0.4); }
   .link-btn:active { transform: translateY(0); }
@@ -90,7 +87,6 @@
   .skill-cat { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 8px; font-weight: 600; }
   .skill-items { display: flex; flex-wrap: wrap; gap: 5px; }
   .skill-pill { font-size: 12px; background: var(--bg-card2); color: var(--text); padding: 3px 10px; border-radius: 20px; border: 1px solid var(--border); }
-  .skill-pill.primary { background: var(--tag-bg); color: var(--tag-text); border-color: rgba(108,99,255,0.3); font-weight: 600; }
   .about-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 1.75rem; box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 20px 40px -24px rgba(0,0,0,0.5); }
   .about-text { font-size: 14px; color: var(--text-muted); line-height: 1.8; margin-bottom: 1.5rem; }
   .highlights-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 1.5rem; }
@@ -125,17 +121,13 @@
   </nav>
 
   <div class="hero">
-    <div class="hero-meta">
-      <div class="status-badge">
-        <span class="status-dot"></span> Open to Work
-      </div>
-      <div class="location-text">
-        <i class="ti ti-map-pin" aria-hidden="true" style="font-size:13px"></i> Tirupur, Tamil Nadu
-      </div>
+    <div class="hero-eyebrow">
+      <i class="ti ti-map-pin" aria-hidden="true" style="font-size:12px"></i>
+      Tirupur, Tamil Nadu · Open to Work
     </div>
     <h1>Kishore Raja<span class="accent"> P</span></h1>
     <div class="hero-roles" id="typedRoles"><span class="cursor"></span></div>
-    <p>Python developer who builds end-to-end — backend APIs, AI agents, and full-stack web apps with React and Node.js. Comfortable with Docker, CI/CD, and real production deployments on AWS.</p>
+    <p>B.Sc IT graduate who builds end-to-end — from full-stack web apps with React and Node.js to AI agents deployed on AWS. Comfortable with Docker, CI/CD, and real production environments.</p>
     <div class="hero-btns">
       <a href="https://linkedin.com/in/kishoreraja0510" class="btn-primary" target="_blank">
         <i class="ti ti-brand-linkedin" aria-hidden="true"></i> LinkedIn
@@ -143,8 +135,8 @@
       <a href="https://github.com/KishoreRaja05" class="btn-ghost" target="_blank">
         <i class="ti ti-brand-github" aria-hidden="true"></i> GitHub
       </a>
-      <a href="mailto:kishoreraja0510@gmail.com" class="btn-ghost">
-        <i class="ti ti-mail" aria-hidden="true"></i> Email
+      <a href="tel:+916374746350" class="btn-ghost">
+        <i class="ti ti-phone" aria-hidden="true"></i> +91 63747 46350
       </a>
     </div>
   </div>
@@ -213,6 +205,24 @@
         </div>
       </div>
 
+      <div class="project-card">
+        <div class="project-badge"><i class="ti ti-clipboard-check" aria-hidden="true" style="font-size:11px"></i> Hiring Assessment</div>
+        <div class="project-title">Luminoflow ERP — Technical Product Assessment</div>
+        <div class="project-desc">End-to-end technical product assessment completed as part of a software development hiring process. Tested Luminoflow ERP as a real business user across organisation setup, client and product management, quotations, sales orders, invoicing, inventory, accounting and GST workflows.</div>
+        <div class="project-features">
+          <div class="feat-item"><div class="feat-dot"></div><span>Followed the full business workflow: org setup → client → products → quotation → sales order → invoice → accounting/GST verification</span></div>
+          <div class="feat-item"><div class="feat-dot"></div><span>Identified and documented 23 reproducible issues, including 8 high-severity findings</span></div>
+          <div class="feat-item"><div class="feat-dot"></div><span>Verified core strengths: GST tax calculation/classification, inventory safeguards, double-entry accounting</span></div>
+          <div class="feat-item"><div class="feat-dot"></div><span>Delivered a structured report with repro steps, expected vs. actual behaviour, severity, business impact and improvement recommendations</span></div>
+        </div>
+        <div class="tags">
+          <span class="tag">Manual Testing</span><span class="tag">Functional Testing</span>
+          <span class="tag">Software Testing</span><span class="tag">Bug Reporting</span>
+          <span class="tag">Quality Assurance</span>
+        </div>
+        <div class="project-date"><i class="ti ti-calendar" aria-hidden="true" style="font-size:12px"></i> July 2026</div>
+      </div>
+
     </div>
   </section>
 
@@ -220,12 +230,13 @@
     <div class="section-label">Stack</div>
     <div class="section-title">Skills</div>
     <div class="skills-grid">
-      <div class="skill-card"><div class="skill-cat">Languages</div><div class="skill-items"><span class="skill-pill primary">Python</span><span class="skill-pill">JavaScript</span><span class="skill-pill">HTML</span><span class="skill-pill">CSS</span></div></div>
+      <div class="skill-card"><div class="skill-cat">Languages</div><div class="skill-items"><span class="skill-pill">Python</span><span class="skill-pill">JavaScript</span><span class="skill-pill">HTML</span><span class="skill-pill">CSS</span></div></div>
       <div class="skill-card"><div class="skill-cat">Frontend</div><div class="skill-items"><span class="skill-pill">React</span><span class="skill-pill">Redux</span><span class="skill-pill">Vite</span><span class="skill-pill">Tailwind CSS</span><span class="skill-pill">Recharts</span></div></div>
       <div class="skill-card"><div class="skill-cat">Backend</div><div class="skill-items"><span class="skill-pill">Node.js</span><span class="skill-pill">Express</span><span class="skill-pill">FastAPI</span><span class="skill-pill">Flask</span><span class="skill-pill">REST API</span><span class="skill-pill">JWT</span></div></div>
       <div class="skill-card"><div class="skill-cat">Database</div><div class="skill-items"><span class="skill-pill">PostgreSQL</span><span class="skill-pill">Supabase</span><span class="skill-pill">MySQL</span></div></div>
       <div class="skill-card"><div class="skill-cat">DevOps & Cloud</div><div class="skill-items"><span class="skill-pill">Docker</span><span class="skill-pill">AWS EC2</span><span class="skill-pill">nginx</span><span class="skill-pill">GitHub Actions</span><span class="skill-pill">Render</span></div></div>
       <div class="skill-card"><div class="skill-cat">AI & Agents</div><div class="skill-items"><span class="skill-pill">LangGraph</span><span class="skill-pill">Groq API</span><span class="skill-pill">Llama 3.3</span><span class="skill-pill">Claude</span><span class="skill-pill">ChatGPT</span></div></div>
+      <div class="skill-card"><div class="skill-cat">Testing & QA</div><div class="skill-items"><span class="skill-pill">Manual Testing</span><span class="skill-pill">Functional Testing</span><span class="skill-pill">Software Testing</span><span class="skill-pill">Bug Reporting</span><span class="skill-pill">Quality Assurance</span></div></div>
     </div>
   </section>
 
@@ -262,14 +273,14 @@
         <div class="edu-icon"><i class="ti ti-school" aria-hidden="true"></i></div>
         <div>
           <div class="edu-val">B.Sc Information Technology</div>
-          <div class="edu-label">Sri Ramakrishna College · Bharathiar University · Graduated 2026</div>
+          <div class="edu-label">Sri Ramakrishna College · Bharathiar University · Graduated 2026 · CGPA 6.9</div>
         </div>
       </div>
 
       <div class="contact-row">
         <a href="https://linkedin.com/in/kishoreraja0510" class="link-btn primary-link" target="_blank"><i class="ti ti-brand-linkedin" aria-hidden="true"></i> LinkedIn</a>
         <a href="https://github.com/KishoreRaja05" class="link-btn" target="_blank"><i class="ti ti-brand-github" aria-hidden="true"></i> GitHub</a>
-        <a href="mailto:kishoreraja0510@gmail.com" class="link-btn"><i class="ti ti-mail" aria-hidden="true"></i> Email</a>
+        <a href="tel:+916374746350" class="link-btn"><i class="ti ti-phone" aria-hidden="true"></i> +91 63747 46350</a>
       </div>
     </div>
   </section>
@@ -309,7 +320,7 @@
     });
   }
 
-  const roles = ['Python Developer', 'Backend Developer', 'AI Agent Developer', 'Full Stack Developer'];
+  const roles = ['Full Stack Developer', 'Python Developer', 'Backend Developer', 'AI Agent Developer'];
   let ri = 0, ci = 0, deleting = false;
   const el = document.getElementById('typedRoles');
   function type() {
